@@ -136,6 +136,9 @@ void lv_canvas_set_px(lv_obj_t * obj, int32_t x, int32_t y, lv_color_t color, lv
         data[1] = color.green;
         data[0] = color.blue;
     }
+    else if(cf == LV_COLOR_FORMAT_RGB332) {
+        *data = lv_color_rgb332(color);
+    }
     else if(cf == LV_COLOR_FORMAT_XRGB8888) {
         data[2] = color.red;
         data[1] = color.green;

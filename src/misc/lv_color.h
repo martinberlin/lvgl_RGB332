@@ -71,6 +71,7 @@ typedef uint8_t lv_opa_t;
                                             (cf) == LV_COLOR_FORMAT_A4 ? 4 :        \
                                             (cf) == LV_COLOR_FORMAT_L8 ? 8 :        \
                                             (cf) == LV_COLOR_FORMAT_A8 ? 8 :        \
+                                            (cf) == LV_COLOR_FORMAT_RGB332 ? 8 :    \
                                             (cf) == LV_COLOR_FORMAT_I8 ? 8 :        \
                                             (cf) == LV_COLOR_FORMAT_RGB565 ? 16 :   \
                                             (cf) == LV_COLOR_FORMAT_RGB565A8 ? 16 : \
@@ -123,6 +124,7 @@ enum _lv_color_format_t {
     LV_COLOR_FORMAT_I4                = 0x09,
     LV_COLOR_FORMAT_I8                = 0x0A,
     LV_COLOR_FORMAT_A8                = 0x0E,
+    LV_COLOR_FORMAT_RGB332            = 0x15,
 
     /*2 byte (+alpha) formats*/
     LV_COLOR_FORMAT_RGB565            = 0x12,
@@ -157,7 +159,7 @@ enum _lv_color_format_t {
 
     /*Color formats in which LVGL can render*/
 #if LV_COLOR_DEPTH == 8
-    LV_COLOR_FORMAT_NATIVE            = LV_COLOR_FORMAT_L8,
+    LV_COLOR_FORMAT_NATIVE            = LV_COLOR_FORMAT_RGB332,
 #elif LV_COLOR_DEPTH == 16
     LV_COLOR_FORMAT_NATIVE            = LV_COLOR_FORMAT_RGB565,
     LV_COLOR_FORMAT_NATIVE_WITH_ALPHA = LV_COLOR_FORMAT_RGB565A8,
@@ -438,6 +440,18 @@ static inline void lv_color16_premultiply(lv_color16_t * c, lv_opa_t a)
     c->green = LV_OPA_MIX2(c->green, a);
     c->blue = LV_OPA_MIX2(c->blue, a);
 }
+
+/**
+ * Get the rgb332 of a color
+ * @param color a color
+ * @return the rgb332 [0..255]
+ */
+static inline uint8_t lv_color_rgb332(lv_color_t c)
+{
+    
+    return (c.red&0xe0) | ((c.green&0xe0) >> 3) | ((c.blue&0xc0) >> 6);
+}
+
 
 /**********************
  *      MACROS
