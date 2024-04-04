@@ -452,6 +452,17 @@ static inline uint8_t lv_color_rgb332(lv_color_t c)
     return (c.red&0xe0) | ((c.green&0xe0) >> 3) | ((c.blue&0xc0) >> 6);
 }
 
+/**
+ * Get the rgb332 of a color
+ * @param color a color
+ * @return the rgb332 [0..255]
+ */
+static inline uint8_t lv_color_rgb332_32(lv_color32_t c)
+{
+    
+    return (c.red&0xe0) | ((c.green&0xe0) >> 3) | ((c.blue&0xc0) >> 6);
+}
+
 
 /**********************
  *      MACROS
