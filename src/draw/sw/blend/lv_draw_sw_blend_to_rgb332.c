@@ -417,49 +417,45 @@ static void LV_ATTRIBUTE_FAST_MEM argb8888_image_blend(_lv_draw_sw_blend_image_d
     }
 }
 
-
 static inline void LV_ATTRIBUTE_FAST_MEM lv_color_8_8_mix(const uint8_t src, uint8_t * dest, uint8_t mix)
 {
 
-    if(mix == 0) return;
+    // make it some mixture of dest and src. closer to 255 it's more src, closer to 0 it's more dest
+    uint8_t mix_inv_mask = (255-mix)>>5; // only 3 bits of mixing info
+    // it's now inverted -- so 7 is fully dest, ... 0 is fully src
+    switch(mix_inv_mask) {
+        case 7:
+            // just return dest = dest
+            break;
+        case 6:
+            *dest = (src & 0b00100100) | (*dest & 0b11011011);
+            break;
+        case 5:
+            *dest = (src & 0b01001001) | (*dest & 0b10110110);
+            break;
+        case 4:
+            *dest = (src & 0b01101101) | (*dest & 0b10010010);
+            break;
+        case 3:
+            *dest = (src & 0b10010010) | (*dest & 0b01101101);
+            break;
+        case 2:
+            *dest = (src & 0b10110110) | (*dest & 0b01001001);
+            break;
+        case 1:
+            *dest = (src & 0b11011011) | (*dest & 0b00100100);
+            break;
+        case 0:
+            *dest = src;
+            break;
+    }
 
-    // we could mix on rgb332, but i'd rather not. it'd be a lot of bit twiddling math and wouldn't make much impact on tulip        
-    // maybe just don't mix? 
-    *dest = src;
-    /*
-    if(mix >= LV_OPA_MAX) {
-        *dest = src;
-    }
-    else {
-        lv_opa_t mix_inv = 255 - mix;
-        *dest = (uint32_t)((uint32_t)src * mix + dest[0] * mix_inv) >> 8;
-    }
-    */
 }
 
 static inline void LV_ATTRIBUTE_FAST_MEM blend_non_normal_pixel(uint8_t * dest, lv_color32_t src, lv_blend_mode_t mode)
 {
     // unclear if this is used by anything we do in tulip yet, so will just return 8_8 mix
     lv_color_8_8_mix(lv_color_rgb332_32(src), dest, src.alpha);
-    /*
-    uint8_t res;
-    int32_t src_lumi = lv_color32_luminance(src);
-    switch(mode) {
-        case LV_BLEND_MODE_ADDITIVE:
-            res = LV_MIN(*dest + src_lumi, 255);
-            break;
-        case LV_BLEND_MODE_SUBTRACTIVE:
-            res = LV_MAX(*dest - src_lumi, 0);
-            break;
-        case LV_BLEND_MODE_MULTIPLY:
-            res = (*dest * src_lumi) >> 8;
-            break;
-        default:
-            LV_LOG_WARN("Not supported blend mode: %d", mode);
-            return;
-    }
-    lv_color_8_8_mix(res, dest, src.alpha);
-    */
 }
 
 static inline void * LV_ATTRIBUTE_FAST_MEM drawbuf_next_row(const void * buf, uint32_t stride)
