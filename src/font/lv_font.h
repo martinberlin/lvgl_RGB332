@@ -190,6 +190,25 @@ void lv_font_set_kerning(lv_font_t * font, lv_font_kerning_t kerning);
  **********************/
 
 #define LV_FONT_DECLARE(font_name) LV_ATTRIBUTE_EXTERN_DATA extern const lv_font_t font_name;
+extern lv_font_t lv_font_tulip_0;
+extern lv_font_t lv_font_tulip_1;
+extern lv_font_t lv_font_tulip_2;
+extern lv_font_t lv_font_tulip_3;
+extern lv_font_t lv_font_tulip_4;
+extern lv_font_t lv_font_tulip_5;
+extern lv_font_t lv_font_tulip_6;
+extern lv_font_t lv_font_tulip_7;
+extern lv_font_t lv_font_tulip_8;
+extern lv_font_t lv_font_tulip_9;
+extern lv_font_t lv_font_tulip_10;
+extern lv_font_t lv_font_tulip_11;
+extern lv_font_t lv_font_tulip_12;
+extern lv_font_t lv_font_tulip_13;
+extern lv_font_t lv_font_tulip_14;
+extern lv_font_t lv_font_tulip_15;
+extern lv_font_t lv_font_tulip_16;
+extern lv_font_t lv_font_tulip_17;
+extern lv_font_t lv_font_tulip_18;
 
 #if LV_FONT_MONTSERRAT_8
 LV_FONT_DECLARE(lv_font_montserrat_8)
