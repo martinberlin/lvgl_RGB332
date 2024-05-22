@@ -1089,8 +1089,10 @@ menu "LVGL configuration"
 			default 0
 			depends on LV_USE_FS_ARDUINO_ESP_LITTLEFS
 
-		config LV_USE_LODEPNG
-			bool "PNG decoder library"
+		config LV_USE_PNGDEC
+			bool "PNG bitbank2 decoder library"
+		config LV_USE_JPEGDEC
+			bool "JPGDEC bitbank2 decoder library"
 
 		config LV_USE_LIBPNG
 			bool "PNG decoder(libpng) library"
